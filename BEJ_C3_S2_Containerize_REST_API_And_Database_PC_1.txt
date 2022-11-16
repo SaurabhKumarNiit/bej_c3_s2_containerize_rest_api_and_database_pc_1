@@ -1,0 +1,75 @@
+BEJ_C3_S2_Containerize_REST_API_And_Database_PC_1
+
+
+
+PS C:\Users\Program> docker run -d --name mongo-cont mongo
+29f8b0e8e68506ec6c63c96e615f65a075752cea8cbf3255d8cfbb510e871f61
+
+PS C:\Users\Program> docker ps -a
+CONTAINER ID   IMAGE           COMMAND                  CREATED         STATUS                       PORTS                               NAMES
+29f8b0e8e685   mongo           "docker-entrypoint.s…"   8 seconds ago   Up 8 seconds                 27017/tcp                           mongo-cont
+
+PS C:\Users\Program> docker exec -it mongo-cont bash
+
+root@29f8b0e8e685:/# mongosh
+Current Mongosh Log ID: 63744679306ccb08d081244b
+Connecting to:          mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.6.0
+Using MongoDB:          6.0.2
+Using Mongosh:          1.6.0
+
+For mongosh info see: https://docs.mongodb.com/mongodb-shell/
+
+
+To help improve our products, anonymous usage data is collected and sent to MongoDB periodically (https://www.mongodb.com/legal/privacy-policy).
+You can opt-out by running the disableTelemetry() command.
+
+------
+   The server generated these startup warnings when booting
+   2022-11-16T02:09:06.009+00:00: Using the XFS filesystem is strongly recommended with the WiredTiger storage engine. See http://dochub.mongodb.org/core/prodnotes-filesystem
+   2022-11-16T02:09:06.452+00:00: Access control is not enabled for the database. Read and write access to data and configuration is unrestricted
+   2022-11-16T02:09:06.452+00:00: /sys/kernel/mm/transparent_hugepage/enabled is 'always'. We suggest setting it to 'never'
+   2022-11-16T02:09:06.452+00:00: vm.max_map_count is too low
+------
+
+------
+   Enable MongoDB's free cloud-based monitoring service, which will then receive and display
+   metrics about your deployment (disk utilization, CPU, operation statistics, etc).
+
+   The monitoring data will be available on a MongoDB website with a unique URL accessible to you
+   and anyone you share the URL with. MongoDB may use this information to make product
+   improvements and to suggest MongoDB products and deployment options to you.
+
+   To enable free monitoring, run the following command: db.enableFreeMonitoring()
+   To permanently disable this reminder, run the following command: db.disableFreeMonitoring()
+------
+
+test> show dbs
+admin   40.00 KiB
+config  12.00 KiB
+local   40.00 KiB
+test> use skdb
+switched to db skdb
+
+skdb> db.createCollection("customers")
+{ ok: 1 }
+skdb> show collections
+customers
+users
+
+skdb> db.customers.insertOne({customerName:"Saurabh Kumar",age:22,address:"Bhopal India",phoneNumber:7788996655,email:"sk@gmail.com"})
+{
+  acknowledged: true,
+  insertedId: ObjectId("6374491a9fb7c9808b70aec2")
+}
+skdb> db.customers.find().pretty()
+[
+  {
+    _id: ObjectId("6374491a9fb7c9808b70aec2"),
+    customerName: 'Saurabh Kumar',
+    age: 22,
+    address: 'Bhopal India',
+    phoneNumber: 7788996655,
+    email: 'sk@gmail.com'
+  }
+]
+skdb>
